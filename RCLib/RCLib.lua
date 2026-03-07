@@ -238,7 +238,7 @@ end
 ModUtil.Path.Wrap( "LeaveRoom", function(basefunc, currentRun, door)
     local prebossTaken = Contains(RCLib.PreBosses, door.Room.Name)
     DebugPrint({ Text = "Entered LeaveRoom wrap" })
-    DebugPrint({ Text = prebossTaken })
+    DebugPrint({ Text = "prebossTaken: " .. prebossTaken })
 
     for i, preboss in pairs(RCLib.PreBosses) do
         if Contains(OfferedExitDoors, preboss) and not prebossTaken then
