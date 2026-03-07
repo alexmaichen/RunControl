@@ -196,13 +196,27 @@ function RCLib.GetFromIndexedList( list, indexedBy, conditions )
     local output = {}
 
     for _, condition in ipairs( indexedBy ) do
-        if condition == "dataType" then conditions.dataTypeChecked = true end
-        if condition == "priority" then return RCLib.GetFromPrioritisedList( force, conditions ) end
-        if force.Data then break end
-        if force.IndexedBy then return RCLib.GetFromList( force, conditions ) end
+        if condition == "dataType" then
+            DebugPrint({ Text = "is dataType" })
+            conditions.dataTypeChecked = true
+        end
+        if condition == "priority" then
+            DebugPrint({ Text = "is priority" })
+            return RCLib.GetFromPrioritisedList( force, conditions )
+        end
+        if force.Data then
+            DebugPrint({ Text = "force.Data" })
+            break
+        end
+        if force.IndexedBy then
+            DebugPrint({ Text = "force.IndexedBy" })
+            return RCLib.GetFromList( force, conditions )
+        end
+
         force = force[conditions[condition]] or {}
     end
     if RCLib.CheckConditions( force.NeededConditions, conditions ) and conditions.dataTypeChecked then
+        DebugPrint({ Text = "check conditions" })
         output = force.Data or {}
     end
 
@@ -245,7 +259,7 @@ ModUtil.Path.Wrap( "LeaveRoom", function(basefunc, currentRun, door)
             if preboss == exitdoor.Room.Name and not prebossTaken then
                 RCLib.ExtensionsTaken = RCLib.ExtensionsTaken + 1
                 DebugPrint({ Text = "Increment ExtensionsTaken" })
-                
+
                 return basefunc(currentRun, door)
             end
         end
