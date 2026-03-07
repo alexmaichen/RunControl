@@ -6,6 +6,7 @@
 ModUtil.Mod.Register( "RCLib" )
 
 RCLib.CurrentBiome = "Tartarus" -- TODO
+RCLib.ExtensionsTaken = 0
 
 function RCLib.GetEligible( inputTable, lookupTable ) -- Read a table of bools, returning a table of the names of all that are true. Optionally use a lookup table to convert the names in inputTable.
     local eligible = {}
@@ -232,3 +233,15 @@ function RCLib.CheckConditions( table, conditions ) -- TODO 1.1.0
     conditions = conditions or {}
     return true
 end
+
+ModUtil.Path.Wrap( "LeaveRoom", function(basefunc, currentRun, door)
+    local prebossTaken = Contains(RCLib.PreBosses, door.Room.Name)
+
+    for i, preboss in pairs(RCLib.PreBosses) do
+        if Contains(OfferedExitDoors, preboss) and prebossTaken then
+            RCLib.ExtensionsTaken = RCLib.ExtensionsTaken + 1
+        end
+    end
+
+    return basefunc(currentRun, door)
+end, RCLib)
