@@ -176,7 +176,7 @@ function RCLib.GetFromList( list, conditions )
     conditions.aspect = conditions.aspect or RCLib.GetAspectName()
 	conditions.biome = conditions.biome or RCLib.CurrentBiome
 	conditions.chamberNum = (conditions.chamberNum or GetRunDepth( CurrentRun )) - RCLib.ExtensionsTaken
-    DebugPrint({ Text = "Applied extension" })
+    DebugPrint({ Text = "Calculated chamberNum: " .. tostring(conditions.chamberNum) })
     conditions.keepsakeCharges = conditions.keepsakeCharges or RCLib.GetKeepsakeCharges()
     conditions.roomName = conditions.roomName or ModUtil.Path.Get( "CurrentRun.CurrentRoom.Name" )
 
@@ -238,12 +238,16 @@ end
 ModUtil.Path.Wrap( "LeaveRoom", function(basefunc, currentRun, door)
     local prebossTaken = Contains(RCLib.PreBosses, door.Room.Name)
     DebugPrint({ Text = "Entered LeaveRoom wrap" })
-    DebugPrint({ Text = "prebossTaken: " .. prebossTaken })
+    DebugPrint({ Text = "prebossTaken: " .. tostring(prebossTaken) })
 
-    for i, preboss in pairs(RCLib.PreBosses) do
-        if Contains(OfferedExitDoors, preboss) and not prebossTaken then
-            RCLib.ExtensionsTaken = RCLib.ExtensionsTaken + 1
-            DebugPrint({ Text = "Increment ExtensionsTaken" })
+    for _, preboss in pairs(RCLib.PreBosses) do
+        for _, exitdoor in pairs(OfferedExitDoors) do
+            if preboss == exitdoor.Room.Name and not prebossTaken then
+                RCLib.ExtensionsTaken = RCLib.ExtensionsTaken + 1
+                DebugPrint({ Text = "Increment ExtensionsTaken" })
+                
+                return basefunc(currentRun, door)
+            end
         end
     end
 
