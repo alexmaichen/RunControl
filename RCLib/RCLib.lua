@@ -253,7 +253,14 @@ function RCLib.CheckConditions( table, conditions ) -- TODO 1.1.0
     return true
 end
 
-ModUtil.Path.Wrap( "LeaveRoom", function(basefunc, currentRun, door)
+ModUtil.Path.Wrap("HandleDeath", function(basefunc, currentRun, killer, killingUnitWeapon)
+    RCLib.ExtensionsTaken = 0
+    DebugPrint({ Text = "Reset extensions" })
+    
+    return basefunc(currentRun, killer, killingUnitWeapon)
+end, RCLib)
+
+ModUtil.Path.Wrap("LeaveRoom", function(basefunc, currentRun, door)
     local prebossTaken = Contains(RCLib.PreBosses, door.Room.Name)
     DebugPrint({ Text = "Entered LeaveRoom wrap" })
     DebugPrint({ Text = "prebossTaken: " .. tostring(prebossTaken) })
