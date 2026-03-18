@@ -5,9 +5,10 @@
 ]]
 ModUtil.Mod.Register( "RCLib" )
 
-RCLib.Config = {
+local config = {
     Extensions = true
 }
+RCLib.config = config
 
 RCLib.CurrentBiome = "Tartarus" -- TODO
 RCLib.ExtensionsTaken = 0
@@ -256,7 +257,7 @@ end
 ModUtil.Path.Wrap("HandleDeath", function(basefunc, currentRun, killer, killingUnitWeapon)
     RCLib.ExtensionsTaken = 0
     DebugPrint({ Text = "Reset extensions" })
-    
+
     return basefunc(currentRun, killer, killingUnitWeapon)
 end, RCLib)
 
