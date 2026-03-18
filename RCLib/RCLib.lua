@@ -259,7 +259,7 @@ ModUtil.Path.Wrap("StartNewRun", function(prevRun, args)
     RCLib.ExtensionsTaken = 0
     DebugPrint({ Text = "Reset extensions" })
 
-    return basefunc(currentRun, killer, killingUnitWeapon)
+    return basefunc(prevRun, args)
 end, RCLib)
 
 ModUtil.Path.Wrap("LeaveRoom", function(basefunc, currentRun, door)
