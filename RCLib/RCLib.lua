@@ -255,10 +255,12 @@ function RCLib.CheckConditions( table, conditions ) -- TODO 1.1.0
 end
 
 ModUtil.Path.Wrap("HandleDeath", function(basefunc, currentRun, killer, killingUnitWeapon)
+    local rv = basefunc(currentRun, killer, killingUnitWeapon)
+    
     RCLib.ExtensionsTaken = 0
     DebugPrint({ Text = "Reset extensions" })
 
-    return basefunc(currentRun, killer, killingUnitWeapon)
+    return rv
 end, RCLib)
 
 ModUtil.Path.Wrap("LeaveRoom", function(basefunc, currentRun, door)
