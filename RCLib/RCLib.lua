@@ -254,7 +254,7 @@ function RCLib.CheckConditions( table, conditions ) -- TODO 1.1.0
     return true
 end
 
-ModUtil.Path.Wrap("StartNewRun", function(prevRun, args)
+ModUtil.Path.Wrap("StartNewRun", function(basefunc, prevRun, args)
 
     RCLib.ExtensionsTaken = 0
     DebugPrint({ Text = "Reset extensions" })
