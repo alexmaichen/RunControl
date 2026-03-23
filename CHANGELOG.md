@@ -18,9 +18,10 @@ To use it, the user must have [Python](https://www.python.org/) installed.
 
 ### Added
 - RC_Maker.py, a tool written in Python using the tkinter library.
+- Support for extending biomes. The route now gets shifted one chamber back too.
 
 ### Changed
-- HOWTO.md to reflect this alternative.
+- HOWTO.md to reflect the alternative.
 
 ## [1.2.0] - 2023-12-05
 
