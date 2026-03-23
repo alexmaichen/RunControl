@@ -181,7 +181,6 @@ function RCLib.GetFromList( list, conditions )
     conditions.aspect = conditions.aspect or RCLib.GetAspectName()
 	conditions.biome = conditions.biome or RCLib.CurrentBiome
 	conditions.chamberNum = (conditions.chamberNum or GetRunDepth( CurrentRun )) - RCLib.ExtensionsTaken
-    DebugPrint({ Text = "Calculated chamberNum: " .. tostring(conditions.chamberNum) })
     conditions.keepsakeCharges = conditions.keepsakeCharges or RCLib.GetKeepsakeCharges()
     conditions.roomName = conditions.roomName or ModUtil.Path.Get( "CurrentRun.CurrentRoom.Name" )
 
@@ -202,26 +201,21 @@ function RCLib.GetFromIndexedList( list, indexedBy, conditions )
 
     for _, condition in ipairs( indexedBy ) do
         if condition == "dataType" then
-            DebugPrint({ Text = "is dataType" })
             conditions.dataTypeChecked = true
         end
         if condition == "priority" then
-            DebugPrint({ Text = "is priority" })
             return RCLib.GetFromPrioritisedList( force, conditions )
         end
         if force.Data then
-            DebugPrint({ Text = "force.Data" })
             break
         end
         if force.IndexedBy then
-            DebugPrint({ Text = "force.IndexedBy" })
             return RCLib.GetFromList( force, conditions )
         end
 
         force = force[conditions[condition]] or {}
     end
     if RCLib.CheckConditions( force.NeededConditions, conditions ) and conditions.dataTypeChecked then
-        DebugPrint({ Text = "check conditions" })
         output = force.Data or {}
     end
 
@@ -255,23 +249,17 @@ function RCLib.CheckConditions( table, conditions ) -- TODO 1.1.0
 end
 
 ModUtil.Path.Wrap("StartNewRun", function(basefunc, prevRun, args)
-
     RCLib.ExtensionsTaken = 0
-    DebugPrint({ Text = "Reset extensions" })
 
     return basefunc(prevRun, args)
 end, RCLib)
 
 ModUtil.Path.Wrap("LeaveRoom", function(basefunc, currentRun, door)
     local prebossTaken = Contains(RCLib.PreBosses, door.Room.Name)
-    DebugPrint({ Text = "Entered LeaveRoom wrap" })
-    DebugPrint({ Text = "prebossTaken: " .. tostring(prebossTaken) })
-
     for _, preboss in pairs(RCLib.PreBosses) do
         for _, exitdoor in pairs(OfferedExitDoors) do
             if preboss == exitdoor.Room.Name and not prebossTaken and RCLib.config.Extensions then
                 RCLib.ExtensionsTaken = RCLib.ExtensionsTaken + 1
-                DebugPrint({ Text = "Increment ExtensionsTaken" })
 
                 return basefunc(currentRun, door)
             end
