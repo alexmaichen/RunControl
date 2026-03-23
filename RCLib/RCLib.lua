@@ -269,7 +269,7 @@ ModUtil.Path.Wrap("LeaveRoom", function(basefunc, currentRun, door)
 
     for _, preboss in pairs(RCLib.PreBosses) do
         for _, exitdoor in pairs(OfferedExitDoors) do
-            if preboss == exitdoor.Room.Name and not prebossTaken and RCLib.Config.Extensions then
+            if preboss == exitdoor.Room.Name and not prebossTaken and RCLib.config.Extensions then
                 RCLib.ExtensionsTaken = RCLib.ExtensionsTaken + 1
                 DebugPrint({ Text = "Increment ExtensionsTaken" })
 
