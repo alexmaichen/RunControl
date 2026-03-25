@@ -10,7 +10,7 @@ local config = {
 }
 RCLib.config = config
 
-RCLib.CurrentBiome = "Tartarus" -- TODO
+RCLib.CurrentBiome = "Tartarus"
 RCLib.ExtensionsTaken = 0
 
 function RCLib.GetEligible( inputTable, lookupTable ) -- Read a table of bools, returning a table of the names of all that are true. Optionally use a lookup table to convert the names in inputTable.
@@ -250,6 +250,7 @@ end
 
 ModUtil.Path.Wrap("StartNewRun", function(basefunc, prevRun, args)
     RCLib.ExtensionsTaken = 0
+    RCLib.CurrentBiome = "Tartarus"
 
     return basefunc(prevRun, args)
 end, RCLib)
@@ -267,4 +268,14 @@ ModUtil.Path.Wrap("LeaveRoom", function(basefunc, currentRun, door)
     end
 
     return basefunc(currentRun, door)
+end, RCLib)
+
+ModUtil.Path.Wrap("DoUnlockRoomExits", function(basefunc, run, room)
+    RCLib.CurrentBiome = run.CurrentRoom.RoomSetName or "Tartarus"
+    basefunc(run, room)
+end, RCLib)
+
+ModUtil.Path.Wrap("StartRoom", function(basefunc, currentRun, currentRoom)
+    RCLib.CurrentBiome = currentRoom.RoomSetName or "Tartarus"
+    basefunc(currentRun, currentRoom)
 end, RCLib)
